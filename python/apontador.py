@@ -27,8 +27,8 @@ import base64
 from oauth import oauth 
 import time
 
-#API_URL = "http://api.apontador.com.br/v1/"
-API_URL = "http://localhost:8080/freeapi/"
+API_URL = "http://api.apontador.com.br/v1/"
+
 
 # BUSCA POR LOCAIS
 SEARCH_PLACES_BY_POINT_URL = API_URL + "search/places/bypoint"
