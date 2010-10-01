@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
 
-##
+#################################################################################
 # apontador.py
-#
-# Encapsulamento (bem simplificado) dos mecanismos de chamada oAuth à Apontador API.
 #
 # Copyright 2010 Miguel Galves (miguel.galves@lbslocal.com)
 # 
@@ -19,7 +17,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# 
+#
+# Requires:
+#          OAuth - http://code.google.com/p/oauth/
+#          HTTPlib2 - http://code.google.com/p/httplib2/
+#
+##################################################################################
  
 import httplib2
 import urllib
@@ -30,18 +33,18 @@ import time
 API_URL = "http://api.apontador.com.br/v1/"
 
 
-# BUSCA POR LOCAIS
+# SEARCH FOR PLACES
 SEARCH_PLACES_BY_POINT_URL = API_URL + "search/places/bypoint"
 SEARCH_PLACES_BY_ADDRESS_URL = API_URL + "search/places/byaddress"
 SEARCH_PLACES_BY_ZIPCODE_URL = API_URL + "search/places/byzipcode"
 SEARCH_PLACES_BY_BOX_URL = API_URL + "search/places/bybox"
 
-# LOCAIS
+# PLACES
 PLACE_URL = API_URL + "places/%s"
 PLACE_PHOTOS_URL = API_URL + "places/%s/photos"
 PLACE_REVIEWS_URL = API_URL + "places/%s/reviews"
 
-# CATEGORIAS
+# CATEGORIES
 CATEGORIES_URL = API_URL + "categories"
 SUBCATEGORIES_URL = API_URL + "categories/%s/subcategories"
 TOP_CATEGORIES_URL = API_URL + "categories/top"
@@ -57,20 +60,12 @@ PLACE_VOTE_UP_URL = API_URL + "places/%s/voteup"
 PLACE_VOTE_DOWN_URL = API_URL + "places/%s/votedown"
 
 
-class APIException(Exception):
-    def __init__(self, value):
-        self.value = value
-    def __str__(self):
-        return u"%s"%(self.value)
-
-
-
 class ApontadorAPI(object):
 
     def __init__(self, consumer_key=None, consumer_secret=None,
                  oauth_token=None, oauth_token_secret=None):
 
-        # Chave e Senha da aplicacao, utilizada para requisicoes Basic Auth
+        # Consumer Key and Secret of the app, used for Basic Auth requests
         self._consumer_key = consumer_key
         self._consumer_secret = consumer_secret
  
@@ -78,8 +73,7 @@ class ApontadorAPI(object):
             base64string = base64.b64encode('%s:%s' % (self._consumer_key, self._consumer_secret))
             self._basic_auth_header =  "Basic %s" % base64string
 
-        # Token e senha de usuario autorizado para acesso de API
-        # Utilizado para requisicoes OAUTH
+        # token and secret that allow access to users data. Used for oauth requests
         self._oauth_token = oauth_token
         self._oauth_token_secret = oauth_token_secret
 
@@ -94,7 +88,7 @@ class ApontadorAPI(object):
 
     def _call_basic_auth_ws(self, url, params):
         if not self._basic_auth_header:
-            raise APIException("BASIC HEADER INCORRETO")
+            raise Exception("BASIC HEADER EXCEPTION")
         
         if params:
             querystring = "?"+urllib.urlencode(params)
@@ -106,7 +100,7 @@ class ApontadorAPI(object):
         http = httplib2.Http()
         response, content = http.request(url+querystring, "GET", headers={"Authorization": self._basic_auth_header})
         if response["status"] != '200':
-            raise APIException(response.reason)
+            raise Exception(response.reason)
 
         return content
         
@@ -145,7 +139,7 @@ class ApontadorAPI(object):
             response, content = http.request(url, "GET")
 
         if response["status"] != '200':
-            raise APIException(response.reason)
+            raise Exception(response.reason)
 
         return content
 
@@ -283,13 +277,6 @@ class ApontadorAPI(object):
         return response
     
 
-    #def get_user_photos(self, page=None, limit=None, type=None):
-    #    params = {}
-    #    self._process_optional_parameters(params, type=type, limit=limit, page=page)
-    #    response = self._call_oauth_ws(USER_PHOTOS_URL, params)
-    #    return response
-
-
     def get_user_reviews(self, page=None, limit=None, type=None):
     	params = {}
         self._process_optional_parameters(params, type=type, limit=limit, page=page)
@@ -329,6 +316,7 @@ class ApontadorAPI(object):
             return message.encode("utf-8")
         else:
            return message
+
             
     def create_new_review(self, place_id, rating, content, type=None):
         params = {"place_id": place_id,
@@ -342,8 +330,8 @@ class ApontadorAPI(object):
         return response
 
 
-    def testPlacesNewPhotos(self):
-     	url = self.base_url + "places/PLACEID/photos/new"
+    #def testPlacesNewPhotos(self):
+    # 	url = self.base_url + "places/PLACEID/photos/new"
 
 
     def vote_place_up(self, place_id, type=None):
