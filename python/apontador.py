@@ -19,7 +19,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+# 
  
 import httplib2
 import urllib
@@ -105,7 +105,6 @@ class ApontadorAPI(object):
         
         http = httplib2.Http()
         response, content = http.request(url+querystring, "GET", headers={"Authorization": self._basic_auth_header})
-        print response
         if response["status"] != '200':
             raise APIException(response.reason)
 
@@ -145,8 +144,6 @@ class ApontadorAPI(object):
         else:
             response, content = http.request(url, "GET")
 
-            print response
-            
         if response["status"] != '200':
             raise APIException(response.reason)
 
@@ -328,7 +325,6 @@ class ApontadorAPI(object):
     
 
     def _to_utf(self, message):
-        print type(message)
         if type(message) == unicode:
             return message.encode("utf-8")
         else:
