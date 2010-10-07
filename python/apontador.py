@@ -58,7 +58,7 @@ CREATE_NEW_PLACE_URL = API_URL + "places/new"
 CREATE_NEW_REVIEW_URL = API_URL + "places/%s/reviews/new"
 PLACE_VOTE_UP_URL = API_URL + "places/%s/voteup"
 PLACE_VOTE_DOWN_URL = API_URL + "places/%s/votedown"
-
+ADD_PHOTO_TO_PLACE_URL = API_URL + "places/%s/photos/new"
 
 class ApontadorAPI(object):
 
@@ -319,8 +319,7 @@ class ApontadorAPI(object):
 
             
     def create_new_review(self, place_id, rating, content, type=None):
-        params = {"place_id": place_id,
-                  "rating": rating,
+        params = {"rating": rating,
                   "content": self._to_utf(content)} 
         if type:
             params["type"] = type
@@ -330,8 +329,19 @@ class ApontadorAPI(object):
         return response
 
 
-    #def testPlacesNewPhotos(self):
-    # 	url = self.base_url + "places/PLACEID/photos/new"
+    def add_photo_to_place(self, place_id, image_file, type=None):
+        file = open(image_file, "rb")
+        bytes = file.read()
+        encoded_bytes = base64.b64encode(bytes)
+        
+        params = {"content": encoded_bytes}
+        if type:
+            params["type"] = type
+
+        url = ADD_PHOTO_TO_PLACE_URL%place_id
+        response = self._call_oauth_ws(url, params, http_method="PUT")
+        return response
+
 
 
     def vote_place_up(self, place_id, type=None):
