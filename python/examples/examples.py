@@ -72,9 +72,9 @@ response = api.get_user_reviews(type="json")
 print response
 print
 
-response = api.create_new_place(name =  "casa do tonho 3",
+response = api.create_new_place(name =  "casa do tonho 45",
                                      address_street = "Joao clemente tesseroli",
-                                     address_number = "87",
+                                     address_number = "90",
                                      address_district = "JD das americas",
                                      address_city_name = "Curitiba",
                                      address_city_state = "PR",
@@ -97,7 +97,7 @@ print
 
 response = api.create_new_review(place_id="SGH39XGU",
                                       rating=4,
-                                      content="Ótimo!",
+                                      content="Ótimo local! Recomendo fortemente",
                                       type="json")
 print response
 print
@@ -105,3 +105,4 @@ print
 api.vote_place_up(place_id="C4030843562F2Q2F2E", type="json")
 api.vote_place_down(place_id="C4030843562F2Q2F2E", type="json")
 
+print api.add_photo_to_place(place_id="C402650422221N2218", image_file="/tmp/casa5.jpg")
