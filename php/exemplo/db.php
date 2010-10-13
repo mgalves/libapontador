@@ -4,7 +4,7 @@
  *
  * Guarda/recupera usuários no banco de dados, autenticando associando dados de acesso da API a eles.
  *
- * Copyright 2010 Carlos Duarte do Nascimento (Chester)
+ * Copyright 2010 Apontador/LBS Local
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -5,7 +5,7 @@
  * Configurações do aplicativo que vai acessar a Apontador API via ApontadorApiLib.php
  * (podem ser obtidas no perfil do usuário "dono" do aplicativo em http://www.apontador.com.br)
  *
- * Copyright 2010 Carlos Duarte do Nascimento (Chester)
+ * Copyright 2010 Apontador/LBS Local
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
