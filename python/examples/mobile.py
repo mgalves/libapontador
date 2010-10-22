@@ -57,7 +57,9 @@ if __name__ == "__main__":
     
     # AUTHORIZATION
     client = oauth.OAuthClient(consumer, token)
-    resp, content =  request(AUTHORIZATION_URL, params={}, consumer=consumer, token=token)
+    resp, content =  request(AUTHORIZATION_URL, 
+			     params={"oauth_callback": "http://api.apontador.com.br/v1/oauth/callback"}, 
+			     consumer=consumer, token=token)
     if resp['status'] != '200':
             print content
             raise Exception("Invalid response %s." % resp['status'])
