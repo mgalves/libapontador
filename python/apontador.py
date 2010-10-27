@@ -32,7 +32,6 @@ import time
 
 API_URL = "http://api.apontador.com.br/v1/"
 
-
 # SEARCH FOR PLACES
 SEARCH_PLACES_BY_POINT_URL = API_URL + "search/places/bypoint"
 SEARCH_PLACES_BY_ADDRESS_URL = API_URL + "search/places/byaddress"
@@ -43,6 +42,7 @@ SEARCH_PLACES_BY_BOX_URL = API_URL + "search/places/bybox"
 PLACE_URL = API_URL + "places/%s"
 PLACE_PHOTOS_URL = API_URL + "places/%s/photos"
 PLACE_REVIEWS_URL = API_URL + "places/%s/reviews"
+PLACE_VISITORS_URL = API_URL + "places/%s/visitors"
 
 # CATEGORIES
 CATEGORIES_URL = API_URL + "categories"
@@ -53,6 +53,7 @@ USER_URL = API_URL + "users/self"
 USER_PLACES_URL = API_URL + "users/self/places"
 USER_PHOTOS_URL = API_URL + "users/self/photos"
 USER_REVIEWS_URL = API_URL + "users/self/reviews"
+USER_VISITEDPLACES_URL = API_URL + "users/self/visitedplaces"
 
 CREATE_NEW_PLACE_URL = API_URL + "places/new"
 CREATE_NEW_REVIEW_URL = API_URL + "places/%s/reviews/new"
@@ -235,6 +236,15 @@ class ApontadorAPI(object):
         if type:
             params["type"] = type
         url = PLACE_REVIEWS_URL%placeid
+        response = self._call_basic_auth_ws(url, params)
+        return response
+
+
+    def get_place_visitors(self, placeid, type=None):
+        params = {}
+        if type:
+            params["type"] = type
+        url = PLACE_VISITORS_URL%placeid
         response = self._call_basic_auth_ws(url, params)
         return response
 

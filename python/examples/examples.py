@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 from apontador import ApontadorAPI
 
-CONSUMER_KEY = "PUT YOUR CONSUMER KEY HERE"
-CONSUMER_SECRET = "PUT YOUR CONSUMER SECRET HERE"
-OAUTH_TOKEN = "PUT YOUR OAUTH TOKEN HERE"
-OAUTH_TOKEN_SECRET = "PUT YOUR OAUTH TOKEN SECRET HERE"
+keys = open("keys.txt", "r")
+CONSUMER_KEY = keys.readline().split("=")[1].strip()
+CONSUMER_SECRET = keys.readline().split("=")[1].strip()
+OAUTH_TOKEN = keys.readline().split("=")[1].strip()
+OAUTH_TOKEN_SECRET = keys.readline().split("=")[1].strip()
+
+print CONSUMER_KEY
+print CONSUMER_SECRET
+print OAUTH_TOKEN
+print OAUTH_TOKEN_SECRET
 
 api = ApontadorAPI(consumer_key = CONSUMER_KEY,
                    consumer_secret = CONSUMER_SECRET,
@@ -76,6 +82,7 @@ response = api.get_place_reviews(placeid="C4030843562F2Q2F2E", type="json")
 print response
 print
 
+from random import randint
 response = api.create_new_place(name =  "casa do tonho  %d"%randint(1, 10000),
                                      address_street = "Joao clemente tesseroli",
                                      address_number = "90",
@@ -109,4 +116,13 @@ print
 api.vote_place_up(place_id="C4030843562F2Q2F2E", type="json")
 api.vote_place_down(place_id="C4030843562F2Q2F2E", type="json")
 
-print api.add_photo_to_place(place_id="C402650422221N2218", image_file="/tmp/casa5.jpg")
+print api.add_photo_to_place(place_id="C402650422221N2218", image_file="/tmp/canvas.png")
+print
+
+response = api.get_place_reviews(placeid="C4030843562F2Q2F2E")
+print response
+print
+
+response = api.get_place_reviews(placeid="C4030843562F2Q2F2E", type="json")
+print response
+print
