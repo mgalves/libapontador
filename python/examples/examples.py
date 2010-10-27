@@ -6,6 +6,7 @@ CONSUMER_KEY = keys.readline().split("=")[1].strip()
 CONSUMER_SECRET = keys.readline().split("=")[1].strip()
 OAUTH_TOKEN = keys.readline().split("=")[1].strip()
 OAUTH_TOKEN_SECRET = keys.readline().split("=")[1].strip()
+USERID = keys.readline().split("=")[1].strip()
 
 print CONSUMER_KEY
 print CONSUMER_SECRET
@@ -119,10 +120,26 @@ api.vote_place_down(place_id="C4030843562F2Q2F2E", type="json")
 print api.add_photo_to_place(place_id="C402650422221N2218", image_file="/tmp/canvas.png")
 print
 
-response = api.get_place_reviews(placeid="C4030843562F2Q2F2E")
+response = api.get_place_visitors(placeid="7W263UQ6")
 print response
 print
 
-response = api.get_place_reviews(placeid="C4030843562F2Q2F2E", type="json")
+response = api.get_place_visitors(placeid="LY56T425", type="json")
+print response
+print
+
+response = api.get_user_visitedplaces()
+print response
+print
+
+response = api.get_user_visitedplaces(type="json")
+print response
+print
+
+response = api.visit_place(placeid="7W263UQ6", type="json")
+print response
+print
+
+response = api.visit_place(placeid="LY56T425", type="xml")
 print response
 print

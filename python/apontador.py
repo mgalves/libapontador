@@ -294,8 +294,24 @@ class ApontadorAPI(object):
         return response
 
 
-    def create_new_place(self, name=None, address_street=None, address_number=None, address_complement=None,
-                         address_district=None, address_city_name=None, address_city_state=None, address_city_country=None,
+    def get_user_visitedplaces(self, type=None):
+    	params = {}
+        self._process_optional_parameters(params, type=type)
+        response = self._call_oauth_ws(USER_VISITEDPLACES_URL, params)
+        return response
+
+
+    def visit_place(self, placeid=None, type=None):
+        params = {"placeid": placeid}
+        self._process_optional_parameters(params, type=type)
+        response = self._call_oauth_ws(USER_VISITEDPLACES_URL, params, http_method="PUT")
+        return response
+
+
+    def create_new_place(self, name=None, address_street=None, address_number=None,
+                         address_complement=None,
+                         address_district=None, address_city_name=None, address_city_state=None,
+                         address_city_country=None,
                          point_lat=None, point_lng=None, phone_country=None, phone_area=None,
                          phone_number=None, category_id=None, subcategory_id=None, description=None,
                          tags=None, icon_url=None, other_url=None, type=None):
