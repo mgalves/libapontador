@@ -72,7 +72,11 @@ response = api.get_user_reviews(type="json")
 print response
 print
 
-response = api.create_new_place(name =  "casa do tonho 45",
+response = api.get_place_reviews(placeid="C4030843562F2Q2F2E", type="json")
+print response
+print
+
+response = api.create_new_place(name =  "casa do tonho  %d"%randint(1, 10000),
                                      address_street = "Joao clemente tesseroli",
                                      address_number = "90",
                                      address_district = "JD das americas",
@@ -95,9 +99,9 @@ response = api.create_new_place(name =  "casa do tonho 45",
 print response
 print
 
-response = api.create_new_review(place_id="SGH39XGU",
-                                      rating=4,
-                                      content="Ótimo local! Recomendo fortemente",
+response = api.create_new_review(place_id="C4082484225B2C5B21",
+                                      rating=randint(1,3),
+                                      content="Ótimo local! Recomendo fortemente %d"%randint(1, 10000),
                                       type="json")
 print response
 print
