@@ -97,7 +97,7 @@ function apontadorChamaApi($verbo="GET", $metodo, $params=array(), $oauth_token=
 	$endpoint = "http://api.apontador.com.br/v1/$metodo";
 	if (!$oauth_token) {
 		$queryparams = http_build_query($params);
-		$auth_hash = base64_encode("$email:$key");
+		$auth_hash = base64_encode("$key:$secret");
 		return _post("$endpoint?$queryparams", "GET", null, "Authorization: $auth_hash");
 	} else {
 		// OAuth
