@@ -53,7 +53,7 @@ USER_URL = API_URL + "users/self"
 USER_PLACES_URL = API_URL + "users/self/places"
 USER_PHOTOS_URL = API_URL + "users/self/photos"
 USER_REVIEWS_URL = API_URL + "users/self/reviews"
-USER_VISITEDPLACES_URL = API_URL + "users/self/visitedplaces"
+USER_VISITEDPLACES_URL = API_URL + "users/self/visits"
 
 CREATE_NEW_PLACE_URL = API_URL + "places/new"
 CREATE_NEW_REVIEW_URL = API_URL + "places/%s/reviews/new"
