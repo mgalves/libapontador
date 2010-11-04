@@ -302,7 +302,7 @@ class ApontadorAPI(object):
 
 
     def visit_place(self, placeid=None, type=None):
-        params = {"placeid": placeid}
+        params = {"place_id": placeid}
         self._process_optional_parameters(params, type=type)
         response = self._call_oauth_ws(USER_VISITEDPLACES_URL, params, http_method="PUT")
         return response
