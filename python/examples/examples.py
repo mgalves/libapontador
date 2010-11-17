@@ -23,6 +23,26 @@ api = ApontadorAPI(consumer_key = CONSUMER_KEY,
 # Basic Auth calls
 ######################################################
 
+response = api.get_user(userid=USERID, type="json")
+print response
+print
+
+response = api.get_user_places(userid=USERID, type="json")
+print response
+print
+
+response = api.get_user_reviews(userid=USERID, type="json")
+print response
+print
+
+response = api.search_users_by_name(name="miguel", type="json")
+print response
+print
+        
+response = api.search_users_by_location(state="SP", city="Campinas", type="json")
+print response
+print
+
 response = api.search_places_by_point(latitude=-23, longitude=-46, type="json")
 print response
 print
@@ -136,10 +156,10 @@ response = api.get_user_visitedplaces(type="json")
 print response
 print
 
-response = api.visit_place(placeid="7W263UQ6", type="json")
+response = api.visit_place(placeid="C402650422221N2218", type="json")
 print response
 print
 
-response = api.visit_place(placeid="LY56T425", type="xml")
+response = api.visit_place(placeid="C402650422221N2218", type="xml")
 print response
 print

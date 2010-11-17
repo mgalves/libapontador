@@ -38,6 +38,10 @@ SEARCH_PLACES_BY_ADDRESS_URL = API_URL + "search/places/byaddress"
 SEARCH_PLACES_BY_ZIPCODE_URL = API_URL + "search/places/byzipcode"
 SEARCH_PLACES_BY_BOX_URL = API_URL + "search/places/bybox"
 
+# SEARCH FOR USERS
+SEARCH_USERS_BY_NAME_URL = API_URL + "search/users/byname"
+SEARCH_USERS_BY_LOCATION_URL = API_URL + "search/users/bylocation"
+
 # PLACES
 PLACE_URL = API_URL + "places/%s"
 PLACE_PHOTOS_URL = API_URL + "places/%s/photos"
@@ -54,6 +58,10 @@ USER_PLACES_URL = API_URL + "users/self/places"
 USER_PHOTOS_URL = API_URL + "users/self/photos"
 USER_REVIEWS_URL = API_URL + "users/self/reviews"
 USER_VISITEDPLACES_URL = API_URL + "users/self/visits"
+
+USER_BYID_URL = API_URL + "users/%s"
+USER_BYID_PLACES_URL = API_URL + "users/%s/places"
+USER_BYID_REVIEWS_URL = API_URL + "users/%s/reviews"
 
 CREATE_NEW_PLACE_URL = API_URL + "places/new"
 CREATE_NEW_REVIEW_URL = API_URL + "places/%s/reviews/new"
@@ -128,10 +136,6 @@ class ApontadorAPI(object):
         else:
             url = request.to_url()
             encoded_post_data = ""
-
-        print
-        print url
-        print
        
         http = httplib2.Http()
         if encoded_post_data:
@@ -212,6 +216,20 @@ class ApontadorAPI(object):
         response = self._call_basic_auth_ws(SEARCH_PLACES_BY_BOX_URL, params)
         return response
 
+    
+    def search_users_by_name(self, name, page=None, limit=None, type=None):
+        params = {"name": name}
+        self._process_optional_parameters(params, page=page, limit=limit, type=type)
+        response = self._call_basic_auth_ws(SEARCH_USERS_BY_NAME_URL, params)
+        return response
+
+
+    def search_users_by_location(self, city, state, page=None, limit=None, type=None):
+        params = {"city": city, "state": state}
+        self._process_optional_parameters(params, page=page, limit=limit, type=type)
+        response = self._call_basic_auth_ws(SEARCH_USERS_BY_LOCATION_URL, params)
+        return response
+
 
     def get_place(self, placeid, type=None):
         params = {}
@@ -272,25 +290,37 @@ class ApontadorAPI(object):
         return response
 
 
-    def get_user(self, type=None):
+    def get_user(self, userid=None, type=None):
         params = {}
         if type:
             params["type"] = type
-     	response = self._call_oauth_ws(USER_URL, params)
+        if userid:
+             url = USER_BYID_URL%userid
+             response = self._call_basic_auth_ws(url, params)
+        else:
+            response = self._call_oauth_ws(USER_URL, params)
         return response
 
 
-    def get_user_places(self, page=None, limit=None, type=None):
+    def get_user_places(self, userid=None, page=None, limit=None, type=None):
         params = {}
         self._process_optional_parameters(params, type=type, limit=limit, page=page)
-        response = self._call_oauth_ws(USER_PLACES_URL, params)
+        if userid:
+            url = USER_BYID_PLACES_URL%userid
+            response = self._call_basic_auth_ws(url, params)
+        else:
+            response = self._call_oauth_ws(USER_PLACES_URL, params)
         return response
     
 
-    def get_user_reviews(self, page=None, limit=None, type=None):
+    def get_user_reviews(self, userid=None, page=None, limit=None, type=None):
     	params = {}
         self._process_optional_parameters(params, type=type, limit=limit, page=page)
-        response = self._call_oauth_ws(USER_REVIEWS_URL, params)
+        if userid:
+            url = USER_BYID_REVIEWS_URL%userid
+            response = self._call_basic_auth_ws(url, params)
+        else:
+            response = self._call_oauth_ws(USER_REVIEWS_URL, params)
         return response
 
 
