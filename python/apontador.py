@@ -58,10 +58,15 @@ USER_PLACES_URL = API_URL + "users/self/places"
 USER_PHOTOS_URL = API_URL + "users/self/photos"
 USER_REVIEWS_URL = API_URL + "users/self/reviews"
 USER_VISITEDPLACES_URL = API_URL + "users/self/visits"
+USER_FOLLOWERS_URL = API_URL + "users/self/followers"
+USER_FOLLOWING_URL = API_URL + "users/self/following"
+USER_UNFOLLOW_URL = API_URL + "users/self/following/%s"
 
 USER_BYID_URL = API_URL + "users/%s"
 USER_BYID_PLACES_URL = API_URL + "users/%s/places"
 USER_BYID_REVIEWS_URL = API_URL + "users/%s/reviews"
+USER_BYID_FOLLOWERS_URL = API_URL + "users/%s/followers"
+USER_BYID_FOLLOWING_URL = API_URL + "users/%s/following"
 
 CREATE_NEW_PLACE_URL = API_URL + "places/new"
 CREATE_NEW_REVIEW_URL = API_URL + "places/%s/reviews/new"
@@ -141,7 +146,7 @@ class ApontadorAPI(object):
         if encoded_post_data:
             response, content = http.request(url,http_method, body=encoded_post_data)
         else:
-            response, content = http.request(url, "GET")
+            response, content = http.request(url, http_method)
 
         if response["status"] != '200':
             raise Exception(response.reason)
@@ -422,4 +427,38 @@ class ApontadorAPI(object):
             return True
         except:
             return False
+
+
+    def get_followers(self, userid=None, page=None, limit=None, type=None):
+    	params = {}
+        self._process_optional_parameters(params, type=type, limit=limit, page=page)
+        if userid:
+            url = USER_BYID_FOLLOWERS_URL%userid
+            response = self._call_basic_auth_ws(url, params)
+        else:
+            response = self._call_oauth_ws(USER_FOLLOWERS_URL, params)
+        return response
+
+    def get_following(self, userid=None, page=None, limit=None, type=None):
+    	params = {}
+        self._process_optional_parameters(params, type=type, limit=limit, page=page)
+        if userid:
+            url = USER_BYID_FOLLOWING_URL%userid
+            response = self._call_basic_auth_ws(url, params)
+        else:
+            response = self._call_oauth_ws(USER_FOLLOWING_URL, params)
+        return response
+
+    def follow(self, userid=None, type=None):
+    	params = {'user_id': userid}
+        self._process_optional_parameters(params, type=type)
+        response = self._call_oauth_ws(USER_FOLLOWING_URL, params, http_method='PUT')
+        return response
+
+    def unfollow(self, userid=None, type=None):
+    	params = {}
+        self._process_optional_parameters(params, type=type)
+        response = self._call_oauth_ws(USER_UNFOLLOW_URL%userid, params, http_method='DELETE')
+        return response
+
     

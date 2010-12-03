@@ -163,3 +163,20 @@ print
 response = api.visit_place(placeid="C402650422221N2218", type="xml")
 print response
 print
+
+response = api.get_followers()
+print response
+print
+
+response = api.get_following()
+print response
+print
+
+
+response = api.follow(userid='1356894046')
+print response
+print
+
+response = api.unfollow(userid='1356894046')
+print response
+print
