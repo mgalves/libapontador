@@ -41,12 +41,19 @@ SEARCH_PLACES_BY_BOX_URL = API_URL + "search/places/bybox"
 # SEARCH FOR USERS
 SEARCH_USERS_BY_NAME_URL = API_URL + "search/users/byname"
 SEARCH_USERS_BY_LOCATION_URL = API_URL + "search/users/bylocation"
+SEARCH_USERS_BY_EMAIL_URL = API_URL + "search/users/byemail"
+SEARCH_USERS_BY_POINT_URL = API_URL + "search/users/bypoint"
+
+# SEARCH DEALS
+SEARCH_DEALS_URL = API_URL + "search/deals"
 
 # PLACES
 PLACE_URL = API_URL + "places/%s"
 PLACE_PHOTOS_URL = API_URL + "places/%s/photos"
 PLACE_REVIEWS_URL = API_URL + "places/%s/reviews"
 PLACE_VISITORS_URL = API_URL + "places/%s/visitors"
+PLACE_NEARBY_USERS_URL = API_URL + "places/%s/nearbyusers"
+PLACE_DEALS_URL = API_URL + "places/%s/deals"
 
 # CATEGORIES
 CATEGORIES_URL = API_URL + "categories"
@@ -57,7 +64,7 @@ USER_URL = API_URL + "users/self"
 USER_PLACES_URL = API_URL + "users/self/places"
 USER_PHOTOS_URL = API_URL + "users/self/photos"
 USER_REVIEWS_URL = API_URL + "users/self/reviews"
-USER_VISITEDPLACES_URL = API_URL + "users/self/visits"
+USER_VISITEDPLACES_URL = API_URL + "users/%s/visits"
 USER_FOLLOWERS_URL = API_URL + "users/self/followers"
 USER_FOLLOWING_URL = API_URL + "users/self/following"
 USER_UNFOLLOW_URL = API_URL + "users/self/following/%s"
@@ -229,12 +236,33 @@ class ApontadorAPI(object):
         return response
 
 
+    def search_users_by_email(self, email, type=None):
+        params = {"email": email}
+        self._process_optional_parameters(params, type=type)
+        response = self._call_basic_auth_ws(SEARCH_USERS_BY_EMAIL_URL, params)
+        return response
+
+
     def search_users_by_location(self, city, state, page=None, limit=None, type=None):
         params = {"city": city, "state": state}
         self._process_optional_parameters(params, page=page, limit=limit, type=type)
         response = self._call_basic_auth_ws(SEARCH_USERS_BY_LOCATION_URL, params)
         return response
 
+
+    def search_users_by_point(self, latitude, longitude, page=None, limit=None, type=None):
+        params = {"lat": latitude, "lng": longitude}
+        self._process_optional_parameters(params, page=page, limit=limit, type=type)
+        response = self._call_basic_auth_ws(SEARCH_USERS_BY_POINT_URL, params)
+        return response
+
+
+    def search_deals(self, latitude, longitude, page=None, limit=None, type=None):
+        params = {"lat": latitude, "lng": longitude}
+        self._process_optional_parameters(params, page=page, limit=limit, type=type)
+        response = self._call_basic_auth_ws(SEARCH_DEALS_URL, params)
+        return response
+    
 
     def get_place(self, placeid, type=None):
         params = {}
@@ -268,6 +296,24 @@ class ApontadorAPI(object):
         if type:
             params["type"] = type
         url = PLACE_VISITORS_URL%placeid
+        response = self._call_basic_auth_ws(url, params)
+        return response
+
+
+    def get_place_nearby_users(self, placeid, type=None):
+        params = {}
+        if type:
+            params["type"] = type
+        url = PLACE_NEARBY_USERS_URL%placeid
+        response = self._call_basic_auth_ws(url, params)
+        return response
+
+
+    def get_place_deals(self, placeid, type=None):
+        params = {}
+        if type:
+            params["type"] = type
+        url = PLACE_DEALS_URL%placeid
         response = self._call_basic_auth_ws(url, params)
         return response
 
@@ -329,10 +375,14 @@ class ApontadorAPI(object):
         return response
 
 
-    def get_user_visitedplaces(self, type=None):
+    def get_user_visitedplaces(self, userid=None, type=None):
     	params = {}
         self._process_optional_parameters(params, type=type)
-        response = self._call_oauth_ws(USER_VISITEDPLACES_URL, params)
+        if userid:
+            url = USER_VISITEDPLACES_URL%userid
+            response = self._call_basic_auth_ws(url, params)
+        else:
+            response = self._call_oauth_ws(USER_VISITEDPLACES_URL%"self", params)
         return response
 
 
